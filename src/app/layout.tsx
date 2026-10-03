@@ -38,7 +38,7 @@ export const metadata: Metadata = {
     siteName: site.name,
     title: `${site.name} — ${site.tagline}`,
     description: site.description,
-    images: [{ url: "/kebaya/soraya.svg", width: 900, height: 1200, alt: site.name }],
+    images: [{ url: "/kebaya/1.webp", width: 900, height: 1200, alt: site.name }],
   },
   twitter: {
     card: "summary_large_image",

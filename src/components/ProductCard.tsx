@@ -8,7 +8,6 @@ type Props = {
   priority?: boolean;
 };
 
-/** Lookbook tile: image, name, category, one line of copy, entry price, CTA. */
 export function ProductCard({ product, priority = false }: Props) {
   return (
     <article className="group flex flex-col">

@@ -9,7 +9,6 @@ type Props = {
   categories: Category[];
 };
 
-/** Only reason this is a client component: the category filter needs state. */
 export function CatalogGrid({ products, categories }: Props) {
   const [active, setActive] = useState<Category | "Semua">("Semua");
 

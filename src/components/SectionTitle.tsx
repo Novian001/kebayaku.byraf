@@ -5,7 +5,6 @@ type Props = {
   align?: "left" | "center";
 };
 
-/** Shared editorial section header: gold eyebrow, serif title, hairline. */
 export function SectionTitle({
   eyebrow,
   title,

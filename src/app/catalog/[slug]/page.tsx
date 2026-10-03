@@ -9,7 +9,7 @@ import { site } from "@/lib/site";
 
 type Params = { slug: string };
 
-/** Pre-render every product page; unknown slugs 404. */
+/** Pre-renders one page per product; unknown slugs 404. */
 export function generateStaticParams() {
   return products.map((p) => ({ slug: p.id }));
 }
@@ -65,7 +65,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
       </div>
 
       <article className="mx-auto grid max-w-7xl gap-12 px-5 py-12 sm:px-8 lg:grid-cols-2 lg:gap-20 lg:py-16">
-        <div className="grid grid-cols-2 gap-4">
+        <div className={product.images.length > 1 ? "grid grid-cols-2 gap-4" : ""}>
           {product.images.map((src, i) => (
             <div
               key={src}
@@ -76,7 +76,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
                 alt={`${product.name} — tampilan ${i + 1}`}
                 fill
                 priority={i === 0}
-                sizes="(max-width: 1024px) 45vw, 25vw"
+                sizes={product.images.length > 1 ? "(max-width: 1024px) 45vw, 25vw" : "(max-width: 1024px) 90vw, 50vw"}
                 className="object-cover"
               />
             </div>
@@ -97,36 +97,44 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
           </p>
 
           <dl className="mt-10 space-y-5 border-t border-base-300 pt-8 text-sm">
-            <div className="flex justify-between gap-6">
-              <dt className="text-[0.6rem] tracking-[0.2em] uppercase text-base-content/50">
-                Bahan
-              </dt>
-              <dd className="text-right text-base-content/80">{product.material}</dd>
-            </div>
-            <div className="flex justify-between gap-6">
-              <dt className="text-[0.6rem] tracking-[0.2em] uppercase text-base-content/50">
-                Ukuran
-              </dt>
-              <dd className="flex flex-wrap justify-end gap-2">
-                {product.sizes.map((s) => (
-                  <span
-                    key={s}
-                    className="border border-base-300 px-3 py-1 text-xs text-base-content/80"
-                  >
-                    {s}
-                  </span>
-                ))}
-              </dd>
-            </div>
+            {product.material ? (
+              <div className="flex justify-between gap-6">
+                <dt className="text-[0.6rem] tracking-[0.2em] uppercase text-base-content/50">
+                  Bahan
+                </dt>
+                <dd className="text-right text-base-content/80">{product.material}</dd>
+              </div>
+            ) : null}
+            {product.sizes?.length ? (
+              <div className="flex justify-between gap-6">
+                <dt className="text-[0.6rem] tracking-[0.2em] uppercase text-base-content/50">
+                  Ukuran
+                </dt>
+                <dd className="flex flex-wrap justify-end gap-2">
+                  {product.sizes.map((s) => (
+                    <span
+                      key={s}
+                      className="border border-base-300 px-3 py-1 text-xs text-base-content/80"
+                    >
+                      {s}
+                    </span>
+                  ))}
+                </dd>
+              </div>
+            ) : null}
           </dl>
 
           <div className="mt-10 border-t border-base-300 pt-8">
-            <p className="text-[0.6rem] tracking-[0.2em] uppercase text-base-content/50">
-              Perkiraan harga sewa
-            </p>
-            <p className="mt-2 font-serif text-3xl text-primary">
-              {product.priceLabel}
-            </p>
+            {product.priceLabel ? (
+              <>
+                <p className="text-[0.6rem] tracking-[0.2em] uppercase text-base-content/50">
+                  Perkiraan harga sewa
+                </p>
+                <p className="mt-2 font-serif text-3xl text-primary">
+                  {product.priceLabel}
+                </p>
+              </>
+            ) : null}
 
             <WhatsAppButton name={product.name} className="mt-8 w-full" />
             <p className="mt-4 text-center text-xs text-base-content/50">

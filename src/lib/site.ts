@@ -1,66 +1,183 @@
 /**
- * Single source of truth for brand + contact details.
- * ponytail: one config object beats a CMS for a brochure site; swap this file
- * for a CMS fetch when a non-developer needs to edit products.
- * `url` is a placeholder — set it to the real domain before deploying.
+ * Single source of truth for brand + contact details, all from `.env.local`
+ * via NEXT_PUBLIC_* — see `.env.example`. `url` still needs the real domain.
  */
-const WHATSAPP_ENV = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER;
 
-function assertWhatsAppEnv(v: string | undefined): asserts v is string {
-  if (!v || v.trim().length === 0) {
-    throw new Error("NEXT_PUBLIC_WHATSAPP_NUMBER is not configured");
+/** Turbopack inlines only literal `process.env.NEXT_PUBLIC_*`, so reads must be
+ * direct expressions — `process.env[key]` ships `undefined` to the client bundle. */
+function requireEnv(name: string, value: string | undefined): string {
+  if (!value || value.trim().length === 0) {
+    throw new Error(`${name} is not configured`);
   }
-  // digits only
-  if (!/^\d+$/.test(v)) {
+  return value.trim();
+}
+
+function toInternationalDigits(raw: string): string {
+  // ponytail: Indonesian prefixes only; per-region handling when a non-Indonesian number lands here.
+  const bare = raw.replace(/^\+/, "").replace(/^0+/, "");
+  return bare.startsWith("62") ? bare : `62${bare}`;
+}
+
+function readWhatsApp(): string {
+  const raw = requireEnv(
+    "NEXT_PUBLIC_WHATSAPP_NUMBER",
+    process.env.NEXT_PUBLIC_WHATSAPP_NUMBER,
+  );
+  if (!/^\d+$/.test(raw)) {
     throw new Error("NEXT_PUBLIC_WHATSAPP_NUMBER must contain digits only");
   }
-  if (v.length < 9 || v.length > 20) {
+  if (raw.length < 9 || raw.length > 20) {
     throw new Error(
       "NEXT_PUBLIC_WHATSAPP_NUMBER has unreasonable length (expected 9–20 digits)",
     );
   }
+  return toInternationalDigits(raw);
 }
 
-assertWhatsAppEnv(WHATSAPP_ENV);
-const whatsappDigits = WHATSAPP_ENV;
-
 function deriveWhatsAppDisplay(digits: string): string {
-  // +62 812-3456-789
-  if (digits.startsWith("628")) {
-    const rest = digits.slice(3);
-    if (rest.length >= 6) {
-      return `+62 ${rest.slice(0, 3)}-${rest.slice(3, 6)}-${rest.slice(6)}`;
+  const rest = digits.replace(/^62/, "");
+  return rest.length >= 6
+    ? `+62 ${rest.slice(0, 3)}-${rest.slice(3, 6)}-${rest.slice(6)}`
+    : `+62 ${rest}`;
+}
+
+// ponytail: lazy cached reads avoid import-time env throws in Next.js dev/bootstrap
+let _whatsappDigits: string | undefined;
+function getWhatsAppDigits(): string {
+  if (_whatsappDigits === undefined) {
+    _whatsappDigits = readWhatsApp();
+  }
+  return _whatsappDigits;
+}
+
+let _whatsappDisplay: string | undefined;
+function getWhatsAppDisplay(): string {
+  if (_whatsappDisplay === undefined) {
+    _whatsappDisplay = deriveWhatsAppDisplay(getWhatsAppDigits());
+  }
+  return _whatsappDisplay;
+}
+
+let _tagline: string | undefined;
+function getTagline(): string {
+  if (_tagline === undefined) {
+    _tagline = requireEnv(
+      "NEXT_PUBLIC_BUSINESS_TAGLINE",
+      process.env.NEXT_PUBLIC_BUSINESS_TAGLINE,
+    );
+  }
+  return _tagline;
+}
+
+let _description: string | undefined;
+function getDescription(): string {
+  if (_description === undefined) {
+    _description = requireEnv(
+      "NEXT_PUBLIC_BUSINESS_DESCRIPTION",
+      process.env.NEXT_PUBLIC_BUSINESS_DESCRIPTION,
+    );
+  }
+  return _description;
+}
+
+let _location: string | undefined;
+function getLocation(): string {
+  if (_location === undefined) {
+    _location = requireEnv(
+      "NEXT_PUBLIC_BUSINESS_LOCATION",
+      process.env.NEXT_PUBLIC_BUSINESS_LOCATION,
+    );
+  }
+  return _location;
+}
+
+let _name: string | undefined;
+function getName(): string {
+  if (_name === undefined) {
+    _name = requireEnv(
+      "NEXT_PUBLIC_BUSINESS_NAME",
+      process.env.NEXT_PUBLIC_BUSINESS_NAME,
+    );
+  }
+  return _name;
+}
+
+let _instagramHandle: string | undefined;
+function getInstagramHandle(): string {
+  if (_instagramHandle === undefined) {
+    _instagramHandle = requireEnv(
+      "NEXT_PUBLIC_INSTAGRAM_HANDLE",
+      process.env.NEXT_PUBLIC_INSTAGRAM_HANDLE,
+    );
+  }
+  return _instagramHandle;
+}
+
+let _instagramUrl: string | undefined;
+function getInstagramUrl(): string {
+  if (_instagramUrl === undefined) {
+    const raw = requireEnv(
+      "NEXT_PUBLIC_INSTAGRAM_URL",
+      process.env.NEXT_PUBLIC_INSTAGRAM_URL,
+    );
+    try {
+      new URL(raw);
+    } catch {
+      throw new Error("NEXT_PUBLIC_INSTAGRAM_URL must be a valid absolute URL");
     }
-    return `+62 ${rest}`;
+    _instagramUrl = raw;
   }
-  if (digits.startsWith("62")) {
-    const rest = digits.slice(2);
-    return rest.length >= 3 ? `+62 ${rest}` : `+62 ${rest}`;
+  return _instagramUrl;
+}
+
+let _url: string | undefined;
+function getUrl(): string {
+  if (_url === undefined) {
+    const raw = requireEnv(
+      "NEXT_PUBLIC_SITE_URL",
+      process.env.NEXT_PUBLIC_SITE_URL,
+    );
+    try {
+      new URL(raw);
+    } catch {
+      throw new Error("NEXT_PUBLIC_SITE_URL must be a valid absolute URL");
+    }
+    // metadataBase/sitemap want an origin, never a trailing-slash path.
+    _url = raw.replace(/\/+$/, "");
   }
-  if (digits.startsWith("0")) {
-    const rest = digits.slice(1);
-    return rest.length >= 3 ? `+62 ${rest}` : `+62 ${rest}`;
-  }
-  return `+${digits}`;
+  return _url;
 }
 
 export const site = {
-  name: "Ayu Selaras",
-  legalName: "Ayu Selaras Atelier",
-  tagline: "Atelier Kebaya Premium",
-  description:
-    "Rental kebaya premium untuk kolos, siraman, akad nikah, dan acara keluarga. Bahan pilihan, jahitan rapih, fitting konsisten.",
-  // TODO: replace with the real production domain.
-  url: "https://ayu-selaras.example.com",
-  whatsapp: whatsappDigits,
-  whatsappDisplay: deriveWhatsAppDisplay(whatsappDigits),
-  instagram: "https://www.instagram.com/ayuselaras",
-  instagramHandle: "@ayuselaras",
-  address: {
-    street: "Jl. Senopati No. 88, Kebayoran Baru",
-    city: "Jakarta Selatan",
-    region: "DKI Jakarta 12190",
-    country: "ID",
+  get name() {
+    return getName();
+  },
+  get legalName() {
+    return getName();
+  },
+  get url() {
+    return getUrl();
+  },
+  get tagline() {
+    return getTagline();
+  },
+  get description() {
+    return getDescription();
+  },
+  get location() {
+    return getLocation();
+  },
+  get whatsapp() {
+    return getWhatsAppDigits();
+  },
+  get whatsappDisplay() {
+    return getWhatsAppDisplay();
+  },
+  get instagram() {
+    return getInstagramUrl();
+  },
+  get instagramHandle() {
+    return getInstagramHandle();
   },
   hours: [
     { day: "Senin – Jumat", time: "10.00 – 20.00 WIB" },
@@ -69,17 +186,10 @@ export const site = {
   ],
 } as const;
 
-export const fullAddress = `${site.address.street}, ${site.address.city}, ${site.address.region}`;
-
-/**
- * Message format fixed by the client brief. Availability, fitting and final
- * pricing are all agreed manually over WhatsApp, so the message only has to
- * carry the product name and open the conversation.
- */
 export const inquiryMessage = (kebayaName: string) =>
-  `Halo, saya tertarik dengan koleksi ${kebayaName}. Saya ingin menanyakan informasi rental untuk kebaya ini.`;
+  `Halo, saya tertarik dengan koleksi ${kebayaName}. Saya ingin menanyakan informasi sewa kebaya ini.`;
 
-export const generalInquiryMessage = `Halo, saya ingin menanyakan informasi rental kebaya di ${site.name}.`;
+export const generalInquiryMessage = `Halo, saya ingin menanyakan informasi sewa kebaya.`;
 
 export const waLink = (message: string) =>
   `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(message)}`;

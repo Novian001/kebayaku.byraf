@@ -17,9 +17,7 @@ export function HeroSection() {
           </h1>
           <div className="rule-gold my-8 w-24" />
           <p className="max-w-lg text-base leading-relaxed text-base-content/75">
-            Koloses Jawa dan kebaya modern yang dijahit satu per satu di atelier kami.
-            Setiap ukuran punya fitting sendiri, jadi tidak ada yang menyempit di hari
-            besar.
+            {site.description}
           </p>
 
           <div className="mt-10 flex flex-col gap-4 sm:flex-row">
@@ -40,7 +38,7 @@ export function HeroSection() {
             {[
               { label: "Koleksi", value: "40+" },
               { label: "Ukuran", value: "S – XXL" },
-              { label: "Area", value: "Jakarta" },
+              { label: "Area", value: "Jabodetabek" },
             ].map((stat) => (
               <div key={stat.label}>
                 <dt className="text-[0.6rem] tracking-[0.25em] uppercase text-base-content/50">
@@ -57,8 +55,8 @@ export function HeroSection() {
         <div className="relative order-1 lg:order-2">
           <div className="relative aspect-4/5 overflow-hidden border border-base-300 shadow-[0_24px_60px_-30px_rgba(13,59,50,0.45)]">
             <Image
-              src="/kebaya/soraya.svg"
-              alt="Kebaya koloses emas dengan bordir sekaten, Ready-to-wear silhouette by Ayu Selaras"
+              src="/kebaya/1.webp"
+              alt={`Kebaya koloses emas dengan bordir sekaten, silhouette ready-to-wear oleh ${site.name}`}
               fill
               priority
               sizes="(max-width: 1024px) 100vw, 45vw"

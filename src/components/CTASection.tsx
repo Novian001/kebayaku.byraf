@@ -7,7 +7,6 @@ type Props = {
   description?: string;
 };
 
-/** Closing conversion block. Reused on every page footer-adjacent. */
 export function CTASection({
   title = "Tinggal chat, kami yang carikan yang cocok.",
   description = `Sebutkan acara dan tanggalnya. ${site.name} akan bantu pilihkan kebaya yang paling pas, lalu kita atur fitting-nya.`,

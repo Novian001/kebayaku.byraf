@@ -7,7 +7,6 @@ type Props = {
   priorityCount?: number;
 };
 
-/** Pure layout shell — filtering lives in the client CatalogGrid. */
 export function ProductGrid({ products, priorityCount = 0 }: Props) {
   if (products.length === 0) {
     return (

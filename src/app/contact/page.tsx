@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { CTASection } from "@/components/CTASection";
 import { SectionTitle } from "@/components/SectionTitle";
 import { WhatsAppButton } from "@/components/WhatsAppButton";
-import { fullAddress, site } from "@/lib/site";
+import { site } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Kontak",
@@ -12,9 +12,9 @@ export const metadata: Metadata = {
 
 const details = [
   {
-    label: "Alamat Atelier",
-    value: fullAddress,
-    href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(fullAddress)}`,
+    label: "Lokasi",
+    value: site.location,
+    href: `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(site.location)}`,
     external: true,
   },
   {

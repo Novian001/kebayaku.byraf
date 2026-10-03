@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { fullAddress, site } from "@/lib/site";
+import { site } from "@/lib/site";
 
 export function Footer() {
   return (
@@ -44,7 +44,7 @@ export function Footer() {
             Kunjungi
           </p>
           <p className="mt-5 text-sm leading-relaxed text-base-content/75">
-            {fullAddress}
+            {site.location}
           </p>
           <ul className="mt-4 space-y-2 text-sm">
             <li>

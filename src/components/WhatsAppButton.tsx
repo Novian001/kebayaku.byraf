@@ -8,10 +8,8 @@ type Props = {
   className?: string;
 };
 
-/**
- * WhatsApp CTA — the only conversion path on the site. Availability, fitting
- * and final pricing are all handled by the owner in the chat thread.
- */
+/** Only conversion path on the site: availability, fitting and final pricing are
+ * all settled by the owner in the chat thread. */
 export function WhatsAppButton({
   name,
   variant = "primary",

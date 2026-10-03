@@ -69,7 +69,7 @@ export default function HomePage() {
           <div className="grid grid-cols-2 gap-5 self-center">
             <div className="relative aspect-3/4 overflow-hidden border border-base-300">
               <Image
-                src="/kebaya/anindya.svg"
+                src="/kebaya/2.webp"
                 alt="Kebaya kolos modern aksen lurik emas"
                 fill
                 sizes="(max-width: 1024px) 45vw, 20vw"
@@ -78,7 +78,7 @@ export default function HomePage() {
             </div>
             <div className="relative mt-10 aspect-3/4 overflow-hidden border border-base-300">
               <Image
-                src="/kebaya/melati.svg"
+                src="/kebaya/3.webp"
                 alt="Kebaya koloses motif melati sulam"
                 fill
                 sizes="(max-width: 1024px) 45vw, 20vw"
@@ -113,7 +113,7 @@ export default function HomePage() {
 
       <section className="mx-auto max-w-7xl px-5 py-20 sm:px-8 lg:py-28">
         <SectionTitle
-          eyebrow="Kenapa Ayu Selaras"
+          eyebrow={`Kenapa ${site.name}`}
           title="Empat hal yang kami jaga di setiap sewa."
           align="center"
         />

@@ -21,7 +21,7 @@ const viewports = [
 const pages = [
   { name: "home", path: "/" },
   { name: "catalog", path: "/catalog" },
-  { name: "detail", path: "/catalog/kebaya-soraya" },
+  { name: "detail", path: "/catalog/kebaya-01" },
   { name: "contact", path: "/contact" },
 ];
 
