@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200" width="900" height="1200" role="img" aria-label="Placeholder foto kebaya SORAYA">
+  <rect width="900" height="1200" fill="hsl(150 16% 86%)"/>
+  <rect x="40" y="40" width="820" height="1120" fill="none" stroke="#D4AF37" stroke-width="2" opacity="0.6"/>
+  <g fill="none" stroke="#0D3B32" stroke-width="3" opacity="0.75" stroke-linejoin="round">
+    <path d="M340 320 L 560 320 L 620 880 L 280 880 Z"/>
+       <path d="M340 320 L 450 430 L 560 320"/>
+       <path d="M300 520 L 600 520"/>
+       <path d="M300 660 L 600 660"/>
+  </g>
+  <text x="450" y="1055" font-family="Georgia, 'Times New Roman', serif" font-size="42"
+        fill="#0D3B32" text-anchor="middle" letter-spacing="8">SORAYA</text>
+  <text x="450" y="1105" font-family="Helvetica, Arial, sans-serif" font-size="20"
+        fill="#0D3B32" opacity="0.6" text-anchor="middle" letter-spacing="4">PLACEHOLDER FOTO</text>
+</svg>

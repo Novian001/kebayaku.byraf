@@ -1,0 +1,10 @@
+# Verification artifacts, not architecture: these are my own audit screenshots
+# and the script-generated SVG placeholders, so indexing them adds nodes
+# describing my own tooling instead of the site.
+shots/
+public/*.svg
+public/kebaya/*.svg
+
+# Auto-written by `next dev`; describes the framework, not this project.
+AGENTS.md
+CLAUDE.md

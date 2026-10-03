@@ -1,0 +1,88 @@
+@import "tailwindcss";
+
+@plugin "daisyui" {
+  themes: atelier --default;
+}
+
+/* Luxury atelier theme: emerald + champagne gold, ivory paper, hard edges.
+   Radius kept near-zero on purpose — editorial fashion, not SaaS cards. */
+@plugin "daisyui/theme" {
+  name: "atelier";
+  default: true;
+  color-scheme: light;
+
+  --color-base-100: #faf8f5;
+  --color-base-200: #f3efe8;
+  --color-base-300: #e5dfd4;
+  --color-base-content: #1f2421;
+  --color-primary: #0d3b32;
+  --color-primary-content: #faf8f5;
+  --color-secondary: #d4af37;
+  --color-secondary-content: #1f2421;
+  --color-accent: #d4af37;
+  --color-accent-content: #1f2421;
+  --color-neutral: #1f2421;
+  --color-neutral-content: #faf8f5;
+  --color-info: #0d3b32;
+  --color-success: #0d3b32;
+  --color-warning: #d4af37;
+  --color-error: #7a2f2a;
+
+  --radius-selector: 0rem;
+  --radius-field: 0rem;
+  --radius-box: 0rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+@theme inline {
+  --font-sans: var(--font-jakarta);
+  --font-serif: var(--font-playfair);
+}
+
+body {
+  background-color: var(--color-base-100);
+  color: var(--color-base-content);
+  font-family: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+}
+
+/* Gold hairline used to separate editorial sections. */
+.rule-gold {
+  background-image: linear-gradient(
+    to right,
+    transparent,
+    var(--color-secondary),
+    transparent
+  );
+  height: 1px;
+}
+
+/* Slow, quiet reveal for entrance animations. */
+@keyframes fade-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.animate-fade-rise {
+  animation: fade-rise 0.7s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-fade-rise {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+  }
+}
