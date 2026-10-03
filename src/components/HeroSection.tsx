@@ -63,7 +63,7 @@ export function HeroSection() {
               className="object-cover"
             />
           </div>
-          {/* Gold rule offset behind the frame — editorial detail, no gradient. */}
+          {/* Gold rule offset behind the frame; editorial detail, no gradient. */}
           <div
             aria-hidden="true"
             className="absolute -bottom-5 -left-5 -z-10 h-full w-full border border-secondary/60"

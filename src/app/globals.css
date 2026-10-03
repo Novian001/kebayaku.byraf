@@ -5,7 +5,7 @@
 }
 
 /* Luxury atelier theme: emerald + champagne gold, ivory paper, hard edges.
-   Radius kept near-zero on purpose — editorial fashion, not SaaS cards. */
+   Radius kept near-zero on purpose; editorial fashion, not SaaS cards. */
 @plugin "daisyui/theme" {
   name: "atelier";
   default: true;

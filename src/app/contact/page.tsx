@@ -39,7 +39,7 @@ export default function ContactPage() {
           <SectionTitle
             eyebrow="Kontak"
             title="Mampir, fitting, atau sekadar tanya."
-            description="Buka WhatsApp adalah cara tercepat. Kalau mau lihat kainnya langsung, mampir ke atelier — fitting selalu dijadwalkan dulu supaya tidak menunggu."
+            description="Buka WhatsApp adalah cara tercepat. Kalau mau lihat kainnya langsung, mampir ke atelier; fitting selalu dijadwalkan dulu supaya tidak menunggu."
           />
         </div>
       </section>

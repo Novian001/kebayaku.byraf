@@ -24,14 +24,15 @@ export async function generateMetadata({
   if (!product) return { title: "Kebaya tidak ditemukan" };
 
   return {
-    title: `${product.name} — ${product.category}`,
-    description: `${product.description} ${product.priceLabel}.`,
-    alternates: { canonical: `/catalog/${product.id}` },
+    title: `${product.name} · ${product.category}`,
+    description: [product.description, product.priceLabel, product.material].filter(Boolean).join(". ") + ([product.description, product.priceLabel, product.material].some(Boolean) ? "." : ""),
     openGraph: {
-      title: `${product.name} — ${site.name}`,
-      description: product.description,
+      type: "article",
+      title: `${product.name} · ${site.name}`,
+      description: [product.description, product.priceLabel, product.material].filter(Boolean).join(". ") + ".",
       images: [{ url: product.images[0], width: 900, height: 1200, alt: product.name }],
     },
+    alternates: { canonical: `/catalog/${product.id}` },
   };
 }
 
@@ -73,7 +74,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
             >
               <Image
                 src={src}
-                alt={`${product.name} — tampilan ${i + 1}`}
+                alt={product.name}
                 fill
                 priority={i === 0}
                 sizes={product.images.length > 1 ? "(max-width: 1024px) 45vw, 25vw" : "(max-width: 1024px) 90vw, 50vw"}
@@ -84,7 +85,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
         </div>
 
         <div className="lg:py-4">
-          <p className="text-[0.65rem] tracking-[0.3em] uppercase text-secondary">
+          <p className="text-[0.65rem] tracking-[0.3em] uppercase text-base-content/65">
             {product.category}
           </p>
           <h1 className="mt-4 font-serif text-4xl leading-tight text-primary sm:text-5xl">

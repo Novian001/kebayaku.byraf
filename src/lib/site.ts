@@ -1,10 +1,10 @@
 /**
  * Single source of truth for brand + contact details, all from `.env.local`
- * via NEXT_PUBLIC_* — see `.env.example`. `url` still needs the real domain.
+ * via NEXT_PUBLIC_*; see `.env.example`. `url` still needs the real domain.
  */
 
 /** Turbopack inlines only literal `process.env.NEXT_PUBLIC_*`, so reads must be
- * direct expressions — `process.env[key]` ships `undefined` to the client bundle. */
+ * direct expressions; `process.env[key]` ships `undefined` to the client bundle. */
 function requireEnv(name: string, value: string | undefined): string {
   if (!value || value.trim().length === 0) {
     throw new Error(`${name} is not configured`);

@@ -18,7 +18,7 @@ export function ProductCard({ product, priority = false }: Props) {
         <div className="relative aspect-3/4 overflow-hidden">
           <Image
             src={product.images[0]}
-            alt={`${product.name} — kebaya ${product.category.toLowerCase()}`}
+            alt={product.name}
             fill
             sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
             priority={priority}
