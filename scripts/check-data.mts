@@ -1,5 +1,5 @@
 // Guards the two hand-edited data files, where a typo only shows up at runtime.
-// Run: npx tsx --env-file=.env.local scripts/check-data.mts
+// Run: npx tsx scripts/check-data.mts
 // ponytail: node:assert is the whole framework here; add a runner when a second
 // suite is worth it.
 import { existsSync } from "node:fs";
