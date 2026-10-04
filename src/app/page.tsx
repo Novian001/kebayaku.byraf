@@ -58,7 +58,7 @@ export default function HomePage() {
               ].map((stat) => (
                 <div key={stat.label}>
                   <p className="font-serif text-2xl text-primary">{stat.value}</p>
-                  <p className="mt-1 text-[0.6rem] tracking-[0.25em] uppercase text-base-content/50">
+                  <p className="mt-1 text-[0.6rem] tracking-[0.25em] uppercase text-base-content/70">
                     {stat.label}
                   </p>
                 </div>
@@ -120,7 +120,7 @@ export default function HomePage() {
         <ul className="mt-14 grid gap-px border border-base-300 bg-base-300 sm:grid-cols-2 lg:grid-cols-4">
           {pillars.map((pillar, i) => (
             <li key={pillar.title} className="bg-base-100 p-8">
-              <p className="text-[0.6rem] tracking-[0.3em] text-secondary">
+              <p className="text-[0.6rem] tracking-[0.3em] text-base-content/70">
                 0{i + 1}
               </p>
               <h3 className="mt-4 font-serif text-xl text-primary">{pillar.title}</h3>

@@ -45,7 +45,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
     <>
       <div className="mx-auto max-w-7xl px-5 pt-10 sm:px-8">
         <nav aria-label="Breadcrumb">
-          <ol className="flex items-center gap-2 text-[0.6rem] tracking-[0.2em] uppercase text-base-content/50">
+          <ol className="flex items-center gap-2 text-[0.6rem] tracking-[0.2em] uppercase text-base-content/70">
             <li>
               <Link href="/" className="transition-colors hover:text-primary">
                 Beranda
@@ -100,7 +100,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
           <dl className="mt-10 space-y-5 border-t border-base-300 pt-8 text-sm">
             {product.material ? (
               <div className="flex justify-between gap-6">
-                <dt className="text-[0.6rem] tracking-[0.2em] uppercase text-base-content/50">
+                <dt className="text-[0.6rem] tracking-[0.2em] uppercase text-base-content/70">
                   Bahan
                 </dt>
                 <dd className="text-right text-base-content/80">{product.material}</dd>
@@ -108,7 +108,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
             ) : null}
             {product.sizes?.length ? (
               <div className="flex justify-between gap-6">
-                <dt className="text-[0.6rem] tracking-[0.2em] uppercase text-base-content/50">
+                <dt className="text-[0.6rem] tracking-[0.2em] uppercase text-base-content/70">
                   Ukuran
                 </dt>
                 <dd className="flex flex-wrap justify-end gap-2">
@@ -128,7 +128,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
           <div className="mt-10 border-t border-base-300 pt-8">
             {product.priceLabel ? (
               <>
-                <p className="text-[0.6rem] tracking-[0.2em] uppercase text-base-content/50">
+                <p className="text-[0.6rem] tracking-[0.2em] uppercase text-base-content/70">
                   Perkiraan harga sewa
                 </p>
                 <p className="mt-2 font-serif text-3xl text-primary">
@@ -138,7 +138,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
             ) : null}
 
             <WhatsAppButton name={product.name} className="mt-8 w-full" />
-            <p className="mt-4 text-center text-xs text-base-content/50">
+            <p className="mt-4 text-center text-xs text-base-content/70">
               Harga final, ketersediaan, dan fitting kami konfirmasi lewat chat.
             </p>
           </div>

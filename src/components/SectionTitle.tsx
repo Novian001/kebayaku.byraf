@@ -17,7 +17,7 @@ export function SectionTitle({
       className={`max-w-2xl ${centered ? "mx-auto text-center" : ""}`}
     >
       {eyebrow && (
-        <p className="mb-4 text-[0.65rem] tracking-[0.35em] uppercase text-secondary">
+        <p className="mb-4 text-[0.65rem] tracking-[0.35em] uppercase text-base-content/70">
           {eyebrow}
         </p>
       )}

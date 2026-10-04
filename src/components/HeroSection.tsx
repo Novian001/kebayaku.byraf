@@ -8,7 +8,7 @@ export function HeroSection() {
     <section className="relative overflow-hidden border-b border-base-300">
       <div className="mx-auto grid max-w-7xl items-center gap-12 px-5 py-16 sm:px-8 lg:grid-cols-2 lg:gap-20 lg:py-24">
         <div className="animate-fade-rise order-2 lg:order-1">
-          <p className="text-[0.65rem] tracking-[0.4em] uppercase text-secondary">
+          <p className="text-[0.65rem] tracking-[0.4em] uppercase text-base-content/70">
             {site.tagline}
           </p>
           <h1 className="mt-6 font-serif text-4xl leading-[1.1] text-primary sm:text-5xl lg:text-6xl">
@@ -41,7 +41,7 @@ export function HeroSection() {
               { label: "Area", value: "Jabodetabek" },
             ].map((stat) => (
               <div key={stat.label}>
-                <dt className="text-[0.6rem] tracking-[0.25em] uppercase text-base-content/50">
+                <dt className="text-[0.6rem] tracking-[0.25em] uppercase text-base-content/70">
                   {stat.label}
                 </dt>
                 <dd className="mt-2 font-serif text-xl text-primary">

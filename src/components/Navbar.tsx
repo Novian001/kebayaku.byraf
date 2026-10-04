@@ -26,7 +26,7 @@ export function Navbar() {
           <span className="truncate font-serif text-base tracking-[0.15em] text-primary uppercase sm:text-xl sm:tracking-[0.18em]">
             {site.name}
           </span>
-          <span className="mt-1 truncate text-[0.5rem] tracking-[0.25em] uppercase text-base-content/50 sm:text-[0.55rem] sm:tracking-[0.35em]">
+          <span className="mt-1 truncate text-[0.5rem] tracking-[0.25em] uppercase text-base-content/70 sm:text-[0.55rem] sm:tracking-[0.35em]">
             {site.tagline}
           </span>
         </Link>

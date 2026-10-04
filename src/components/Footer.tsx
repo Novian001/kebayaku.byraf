@@ -9,7 +9,7 @@ export function Footer() {
           <p className="font-serif text-lg tracking-[0.18em] text-primary uppercase">
             {site.name}
           </p>
-          <p className="mt-1 text-[0.55rem] tracking-[0.35em] uppercase text-base-content/50">
+          <p className="mt-1 text-[0.55rem] tracking-[0.35em] uppercase text-base-content/70">
             {site.tagline}
           </p>
           <p className="mt-5 max-w-xs text-sm leading-relaxed text-base-content/70">
@@ -18,7 +18,7 @@ export function Footer() {
         </div>
 
         <nav aria-label="Navigasi footer">
-          <p className="text-[0.6rem] tracking-[0.3em] uppercase text-secondary">
+          <p className="text-[0.6rem] tracking-[0.3em] uppercase text-base-content/70">
             Halaman
           </p>
           <ul className="mt-5 space-y-3">
@@ -40,7 +40,7 @@ export function Footer() {
         </nav>
 
         <address className="not-italic">
-          <p className="text-[0.6rem] tracking-[0.3em] uppercase text-secondary">
+          <p className="text-[0.6rem] tracking-[0.3em] uppercase text-base-content/70">
             Kunjungi
           </p>
           <p className="mt-5 text-sm leading-relaxed text-base-content/75">
@@ -72,7 +72,7 @@ export function Footer() {
       </div>
 
       <div className="border-t border-base-300/60">
-        <p className="mx-auto max-w-7xl px-5 py-6 text-[0.65rem] tracking-[0.15em] text-base-content/45 uppercase sm:px-8">
+        <p className="mx-auto max-w-7xl px-5 py-6 text-[0.65rem] tracking-[0.15em] text-base-content/70 uppercase sm:px-8">
           © {new Date().getFullYear()} {site.legalName}. Seluruh hak cipta dilindungi.
         </p>
       </div>

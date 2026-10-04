@@ -34,7 +34,7 @@ export function ProductCard({ product, priority = false }: Props) {
           </Link>
         </h3>
 
-        <p className="text-[0.65rem] tracking-[0.25em] uppercase text-base-content/50">
+        <p className="text-[0.65rem] tracking-[0.25em] uppercase text-base-content/70">
           {product.category}
         </p>
 

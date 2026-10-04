@@ -10,7 +10,7 @@ type Props = {
 export function ProductGrid({ products, priorityCount = 0 }: Props) {
   if (products.length === 0) {
     return (
-      <p className="border border-base-300 px-6 py-16 text-center text-sm text-base-content/60">
+      <p className="border border-base-300 px-6 py-16 text-center text-sm text-base-content/70">
         Belum ada kebaya di kategori ini.
       </p>
     );

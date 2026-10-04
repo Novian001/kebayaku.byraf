@@ -44,11 +44,11 @@ export function CatalogGrid({ products, categories }: Props) {
               className={`text-[0.65rem] tracking-[0.2em] uppercase transition-colors duration-300 ${
                 isActive
                   ? "text-primary underline decoration-secondary decoration-2 underline-offset-[6px]"
-                  : "text-base-content/55 hover:text-primary"
+                  : "text-base-content/70 hover:text-primary"
               }`}
             >
               {c}
-              <span className="ml-2 text-[0.55rem] text-base-content/40">
+              <span className="ml-2 text-[0.55rem] text-base-content/70">
                 {counts.get(c) ?? 0}
               </span>
             </button>

@@ -51,7 +51,7 @@ export default function ContactPage() {
           <ul className="space-y-6">
             {details.map((item) => (
               <li key={item.label}>
-                <p className="text-[0.6rem] tracking-[0.25em] uppercase text-secondary">
+                <p className="text-[0.6rem] tracking-[0.25em] uppercase text-base-content/70">
                   {item.label}
                 </p>
                 <a
