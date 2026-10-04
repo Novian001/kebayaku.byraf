@@ -9,7 +9,7 @@ import { fileURLToPath } from "node:url";
 // No .ts suffix: tsx resolves them, tsc only allows it when
 // allowImportingTsExtensions is on.
 import { categories, featuredProducts, getProduct, products } from "../src/data/products";
-import { generalInquiryMessage, inquiryMessage, site, waLink } from "../src/lib/site";
+import { site } from "../src/lib/site";
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const fail: string[] = [];
@@ -97,23 +97,23 @@ ok(categories.length === 1 && categories[0] === "Kebaya", "categories simplified
 ok(products.every((p) => p.category === "Kebaya"), "all products must be category Kebaya");
 ok(featuredProducts.length === 4, "featuredProducts must be exactly 4");
 
-const msg = inquiryMessage("Kebaya 01");
+const msg = site.inquiryMessage("Kebaya 01");
 ok(msg.includes("Kebaya 01"), "inquiryMessage must carry the product name");
 ok(
   !/ketersediaan|tersedia|booking|pemesanan/i.test(msg),
   "inquiryMessage must not reference availability — the owner confirms that by hand",
 );
-ok(!/https?:\/\//.test(generalInquiryMessage), "generalInquiryMessage must be plain text");
+ok(!/https?:\/\//.test(site.generalInquiryMessage), "generalInquiryMessage must be plain text");
 ok(
-  waLink(msg).startsWith(`https://wa.me/${site.whatsapp}?text=`),
+  site.waLink(msg).startsWith(`https://wa.me/${site.whatsapp}?text=`),
   "waLink built the wrong URL",
 );
 ok(
-  !waLink(msg).slice(`https://wa.me/${site.whatsapp}?text=`.length).includes(" "),
+  !site.waLink(msg).slice(`https://wa.me/${site.whatsapp}?text=`.length).includes(" "),
   "waLink message is not URL-encoded",
 );
 ok(
-  decodeURIComponent(waLink(msg).split("?text=")[1]) === msg,
+  decodeURIComponent(site.waLink(msg).split("?text=")[1]) === msg,
   "waLink does not round-trip the message",
 );
 

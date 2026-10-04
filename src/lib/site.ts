@@ -1,15 +1,49 @@
 /**
- * Single source of truth for brand + contact details, all from `.env.local`
- * via NEXT_PUBLIC_*; see `.env.example`. `url` still needs the real domain.
+ * Single source of truth for brand + contact details. Uses centralized defaults
+ * with optional NEXT_PUBLIC_* overrides. Built-in Vercel envs are used for site
+ * URL when no explicit override is set.
  */
 
-/** Turbopack inlines only literal `process.env.NEXT_PUBLIC_*`, so reads must be
- * direct expressions; `process.env[key]` ships `undefined` to the client bundle. */
-function requireEnv(name: string, value: string | undefined): string {
-  if (!value || value.trim().length === 0) {
-    throw new Error(`${name} is not configured`);
+const DEFAULT_SITE = {
+  name: "Kebayaku by Raf",
+  tagline: "SEWA KEBAYA JABODETABEK DAN BISA KIRIM KE LUAR KOTA/DAERAH",
+  description:
+    "Sewa kebaya Wisuda, Lamaran JABODETABEK dan bisa kirim ke LUAR KOTA/DAERAH",
+  location: "Tanjung Duren, Jakarta Barat",
+  whatsapp: "6282240404619",
+  instagramHandle: "@kebayaku.byraf",
+  instagramUrl: "https://www.instagram.com/kebayaku.byraf/",
+} as const;
+
+function withProtocol(value: string): string {
+  return /^https?:\/\//.test(value) ? value : `https://${value}`;
+}
+
+function normalizeUrl(raw: string): string {
+  try {
+    return withProtocol(raw).replace(/\/+$/, "");
+  } catch {
+    return withProtocol(raw).replace(/\/+$/, "");
   }
-  return value.trim();
+}
+
+function resolveSiteUrl(): string {
+  const envUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim();
+  if (envUrl && envUrl.length > 0) {
+    return normalizeUrl(envUrl);
+  }
+
+  const vercelProd = process.env.VERCEL_PROJECT_PRODUCTION_URL?.trim();
+  if (vercelProd && vercelProd.length > 0) {
+    return normalizeUrl(vercelProd);
+  }
+
+  const vercelUrl = process.env.VERCEL_URL?.trim();
+  if (vercelUrl && vercelUrl.length > 0) {
+    return normalizeUrl(vercelUrl);
+  }
+
+  return "http://localhost:3000";
 }
 
 function toInternationalDigits(raw: string): string {
@@ -18,20 +52,38 @@ function toInternationalDigits(raw: string): string {
   return bare.startsWith("62") ? bare : `62${bare}`;
 }
 
-function readWhatsApp(): string {
-  const raw = requireEnv(
-    "NEXT_PUBLIC_WHATSAPP_NUMBER",
-    process.env.NEXT_PUBLIC_WHATSAPP_NUMBER,
-  );
-  if (!/^\d+$/.test(raw)) {
-    throw new Error("NEXT_PUBLIC_WHATSAPP_NUMBER must contain digits only");
+function validateResolvedUrl(url: string): void {
+  try {
+    new URL(url);
+  } catch {
+    throw new Error("site.url must be a valid absolute http/https URL");
   }
-  if (raw.length < 9 || raw.length > 20) {
-    throw new Error(
-      "NEXT_PUBLIC_WHATSAPP_NUMBER has unreasonable length (expected 9–20 digits)",
-    );
+}
+
+function validateInstagramUrl(url: string): void {
+  try {
+    const parsed = new URL(url);
+    if (parsed.protocol !== "https:") {
+      throw new Error("site.instagram must use https");
+    }
+    if (!/instagram\.com$/i.test(parsed.hostname)) {
+      throw new Error("site.instagram must be an instagram.com URL");
+    }
+  } catch (e) {
+    if (e instanceof Error && e.message.startsWith("site.instagram")) {
+      throw e;
+    }
+    throw new Error("site.instagram must be a valid absolute URL");
   }
-  return toInternationalDigits(raw);
+}
+
+function validateWhatsApp(digits: string): void {
+  if (!/^\d+$/.test(digits)) {
+    throw new Error("site.whatsapp must contain digits only");
+  }
+  if (digits.length < 9 || digits.length > 20) {
+    throw new Error("site.whatsapp has unreasonable length (expected 9–20 digits)");
+  }
 }
 
 function deriveWhatsAppDisplay(digits: string): string {
@@ -42,10 +94,62 @@ function deriveWhatsAppDisplay(digits: string): string {
 }
 
 // ponytail: lazy cached reads avoid import-time env throws in Next.js dev/bootstrap
+let _name: string | undefined;
+function getName(): string {
+  if (_name === undefined) {
+    const env = process.env.NEXT_PUBLIC_BUSINESS_NAME?.trim();
+    _name = env && env.length > 0 ? env : DEFAULT_SITE.name;
+    if (!_name || _name.trim().length === 0) {
+      throw new Error("site.name is invalid");
+    }
+  }
+  return _name;
+}
+
+let _tagline: string | undefined;
+function getTagline(): string {
+  if (_tagline === undefined) {
+    const env = process.env.NEXT_PUBLIC_BUSINESS_TAGLINE?.trim();
+    _tagline = env && env.length > 0 ? env : DEFAULT_SITE.tagline;
+    if (!_tagline || _tagline.trim().length === 0) {
+      throw new Error("site.tagline is invalid");
+    }
+  }
+  return _tagline;
+}
+
+let _description: string | undefined;
+function getDescription(): string {
+  if (_description === undefined) {
+    const env = process.env.NEXT_PUBLIC_BUSINESS_DESCRIPTION?.trim();
+    _description = env && env.length > 0 ? env : DEFAULT_SITE.description;
+    if (!_description || _description.trim().length === 0) {
+      throw new Error("site.description is invalid");
+    }
+  }
+  return _description;
+}
+
+let _location: string | undefined;
+function getLocation(): string {
+  if (_location === undefined) {
+    const env = process.env.NEXT_PUBLIC_BUSINESS_LOCATION?.trim();
+    _location = env && env.length > 0 ? env : DEFAULT_SITE.location;
+    if (!_location || _location.trim().length === 0) {
+      throw new Error("site.location is invalid");
+    }
+  }
+  return _location;
+}
+
 let _whatsappDigits: string | undefined;
 function getWhatsAppDigits(): string {
   if (_whatsappDigits === undefined) {
-    _whatsappDigits = readWhatsApp();
+    const env = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER?.trim();
+    const raw = env && env.length > 0 ? env : DEFAULT_SITE.whatsapp;
+    const digits = toInternationalDigits(raw);
+    validateWhatsApp(digits);
+    _whatsappDigits = digits;
   }
   return _whatsappDigits;
 }
@@ -58,57 +162,14 @@ function getWhatsAppDisplay(): string {
   return _whatsappDisplay;
 }
 
-let _tagline: string | undefined;
-function getTagline(): string {
-  if (_tagline === undefined) {
-    _tagline = requireEnv(
-      "NEXT_PUBLIC_BUSINESS_TAGLINE",
-      process.env.NEXT_PUBLIC_BUSINESS_TAGLINE,
-    );
-  }
-  return _tagline;
-}
-
-let _description: string | undefined;
-function getDescription(): string {
-  if (_description === undefined) {
-    _description = requireEnv(
-      "NEXT_PUBLIC_BUSINESS_DESCRIPTION",
-      process.env.NEXT_PUBLIC_BUSINESS_DESCRIPTION,
-    );
-  }
-  return _description;
-}
-
-let _location: string | undefined;
-function getLocation(): string {
-  if (_location === undefined) {
-    _location = requireEnv(
-      "NEXT_PUBLIC_BUSINESS_LOCATION",
-      process.env.NEXT_PUBLIC_BUSINESS_LOCATION,
-    );
-  }
-  return _location;
-}
-
-let _name: string | undefined;
-function getName(): string {
-  if (_name === undefined) {
-    _name = requireEnv(
-      "NEXT_PUBLIC_BUSINESS_NAME",
-      process.env.NEXT_PUBLIC_BUSINESS_NAME,
-    );
-  }
-  return _name;
-}
-
 let _instagramHandle: string | undefined;
 function getInstagramHandle(): string {
   if (_instagramHandle === undefined) {
-    _instagramHandle = requireEnv(
-      "NEXT_PUBLIC_INSTAGRAM_HANDLE",
-      process.env.NEXT_PUBLIC_INSTAGRAM_HANDLE,
-    );
+    const env = process.env.NEXT_PUBLIC_INSTAGRAM_HANDLE?.trim();
+    _instagramHandle = env && env.length > 0 ? env : DEFAULT_SITE.instagramHandle;
+    if (!_instagramHandle || _instagramHandle.trim().length === 0) {
+      throw new Error("site.instagramHandle is invalid");
+    }
   }
   return _instagramHandle;
 }
@@ -116,16 +177,9 @@ function getInstagramHandle(): string {
 let _instagramUrl: string | undefined;
 function getInstagramUrl(): string {
   if (_instagramUrl === undefined) {
-    const raw = requireEnv(
-      "NEXT_PUBLIC_INSTAGRAM_URL",
-      process.env.NEXT_PUBLIC_INSTAGRAM_URL,
-    );
-    try {
-      new URL(raw);
-    } catch {
-      throw new Error("NEXT_PUBLIC_INSTAGRAM_URL must be a valid absolute URL");
-    }
-    _instagramUrl = raw;
+    const env = process.env.NEXT_PUBLIC_INSTAGRAM_URL?.trim();
+    _instagramUrl = env && env.length > 0 ? env : DEFAULT_SITE.instagramUrl;
+    validateInstagramUrl(_instagramUrl);
   }
   return _instagramUrl;
 }
@@ -133,17 +187,8 @@ function getInstagramUrl(): string {
 let _url: string | undefined;
 function getUrl(): string {
   if (_url === undefined) {
-    const raw = requireEnv(
-      "NEXT_PUBLIC_SITE_URL",
-      process.env.NEXT_PUBLIC_SITE_URL,
-    );
-    try {
-      new URL(raw);
-    } catch {
-      throw new Error("NEXT_PUBLIC_SITE_URL must be a valid absolute URL");
-    }
-    // metadataBase/sitemap want an origin, never a trailing-slash path.
-    _url = raw.replace(/\/+$/, "");
+    _url = resolveSiteUrl();
+    validateResolvedUrl(_url);
   }
   return _url;
 }
@@ -179,17 +224,16 @@ export const site = {
   get instagramHandle() {
     return getInstagramHandle();
   },
-  hours: [
-    { day: "Senin – Jumat", time: "10.00 – 20.00 WIB" },
-    { day: "Sabtu", time: "10.00 – 18.00 WIB" },
-    { day: "Minggu", time: "Dengan janji temu" },
-  ],
-} as const;
-
-export const inquiryMessage = (kebayaName: string) =>
-  `Halo, saya tertarik dengan koleksi ${kebayaName}. Saya ingin menanyakan informasi sewa kebaya ini.`;
-
-export const generalInquiryMessage = `Halo, saya ingin menanyakan informasi sewa kebaya.`;
-
-export const waLink = (message: string) =>
-  `https://wa.me/${site.whatsapp}?text=${encodeURIComponent(message)}`;
+  get instagramUrl() {
+    return getInstagramUrl();
+  },
+  waLink: (message: string) => {
+    return `https://wa.me/${getWhatsAppDigits()}?text=${encodeURIComponent(
+      message,
+    )}`;
+  },
+  inquiryMessage: (name: string) =>
+    `Halo, saya tertarik dengan kebaya "${name}". Bisa info ukuran dan harga sewa?`,
+  generalInquiryMessage:
+    "Halo, saya tertarik menyewa kebaya. Bisa bantu lihat koleksi dan jadwal fitting?",
+};

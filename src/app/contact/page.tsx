@@ -77,7 +77,11 @@ export default function ContactPage() {
           <table className="w-full text-sm">
             <caption className="sr-only">Jam operasional {site.name}</caption>
             <tbody>
-              {site.hours.map((row) => (
+              {[
+                { day: "Senin – Jumat", time: "10.00 – 20.00 WIB" },
+                { day: "Sabtu", time: "10.00 – 18.00 WIB" },
+                { day: "Minggu", time: "Dengan janji temu" },
+              ].map((row: { day: string; time: string }) => (
                 <tr key={row.day} className="border-b border-base-300">
                   <th scope="row" className="py-4 text-left font-normal text-base-content/70">
                     {row.day}
@@ -89,13 +93,12 @@ export default function ContactPage() {
           </table>
 
           <div className="mt-12 border border-base-300 bg-base-200/50 p-8">
-            <p className="text-[0.6rem] tracking-[0.25em] uppercase text-secondary">
+            <p className="text-[0.6rem] tracking-[0.25em] uppercase text-base-content/65">
               Catatan fitting
             </p>
             <p className="mt-4 text-sm leading-relaxed text-base-content/75">
-              Fitting memerlukan waktu sekitar 30–45 menit. Datang dengan kaos dalam
-              dan alas kaki yang biasanya Anda pakai, supaya ukurannya bisa kami
-              sesuaikan dengan benar.
+              Untuk memastikan waktu tersedia, sebaiknya jadwalkan fitting terlebih
+              dahulu.
             </p>
           </div>
         </div>

@@ -1,4 +1,4 @@
-import { generalInquiryMessage, inquiryMessage, site, waLink } from "@/lib/site";
+import { site } from "@/lib/site";
 
 type Props = {
   /** Omit for a generic brand enquiry instead of a per-product one. */
@@ -16,7 +16,7 @@ export function WhatsAppButton({
   label,
   className = "",
 }: Props) {
-  const href = waLink(name ? inquiryMessage(name) : generalInquiryMessage);
+  const href = site.waLink(name ? site.inquiryMessage(name) : site.generalInquiryMessage);
 
   const styles = {
     primary:
